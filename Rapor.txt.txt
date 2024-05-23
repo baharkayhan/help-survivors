@@ -1,0 +1,45 @@
+Acil Durum İHA Simülasyon Projesi Raporu
+1. Giriş
+Bu proje, acil durum insansız hava araçlarının (İHA) afetzedelere yardım ulaştırdığı bir simülasyon programının geliştirilmesini hedeflemektedir. Proje, bir 2D haritada rastgele konumlarda beliren afetzedelerin (survivor) bulunduğu hücrelere İHA'ların yardım paketleri ulaştırmasını simüle etmektedir. Proje MVC (Model-View-Controller) modeli temel alınarak tasarlanmıştır.
+
+2. Model
+2.1. Veri Tipleri ve Yapılar
+Projede kullanılan temel veri tipleri ve yapılar aşağıda belirtilmiştir:
+
+Coordinate: Haritadaki bir hücrenin x ve y koordinatlarını temsil eder.
+MapCell: Bir hücreyi temsil eder, içerisinde koordinat bilgisi ve yardım bekleyen afetzedelerin listesi bulunur.
+Map: 2 boyutlu haritayı temsil eder, hücreler (MapCell) içerir.
+Drone: İHA'ların lokasyon, hız, origin ve hedef bilgilerini içerir.
+Survivor: Afetzedeleri temsil eder, oluşma zamanı (discovery_time), yardım aldığı zaman (helped_time) ve koordinat bilgilerini içerir.
+List: İHA'ların ve afetzedelerin listelendiği veri yapısı.
+2.2. Fonksiyonlar
+Projede 3 ana fonksiyon, ayrı threadler ile çalıştırılmaktadır:
+
+Survivor Generator: Rastgele konumlarda afetzedeler oluşturur ve ilgili hücrenin ve genel survivor listesini günceller.
+drone_runner(): Her bir İHA için ayrı thread oluşturularak çalıştırılır. İHA'lar belirlenen hedefe doğru hareket eder ve yardım paketlerini ulaştırır.
+drone_controller(AI-Server): Afetzede listesini okuyarak boşta bekleyen İHA'ları afetzedelere yönlendirir.
+3. Controller
+Controller, ana fonksiyon olarak harita ve verileri başlatarak view'ı çağırır. Ardından model her güncellendiğinde view tekrar render edilmektedir. Bu aşamada 1, 2 ve 3 numaralı fonksiyonlar threadler ile oluşturulup view'ın sürekli güncellenmesi sağlanır.
+
+4. View
+View, haritada afetzedeleri ve İHA'ları göstermektedir. Simülasyon sırasında harita üzerinde İHA'ların hareketi ve afetzedelerin yardım alma süreci görselleştirilir.
+
+5. İstatistik ve Analiz
+5.1. Ortalama Yardım Alma Süresi
+Simülasyonda 1000 afetzede için ortalama yardım alma süresi hesaplanmıştır. Her bir afetzedenin yardım alma süresi şu şekilde hesaplanmıştır:
+beklemezamanı = survivor.helped_time - survivor.discovery_time;
+
+5.2. İHA Sayısı ve Afetzede Üretim Hızı İlişkisi
+Simülasyon, 10 İHA ve her saniyede i kadar afetzede oluşturularak çalıştırılmıştır. i değeri {1, 2, ..., 10} arasında değişen değerler almıştır. Sonuçlar şu şekilde analiz edilmiştir:
+
+i = 1: Ortalama yardım alma süresi düşüktür, sistem rahat çalışmaktadır.
+i = 10: Ortalama yardım alma süresi oldukça yüksektir, sistemde yoğunluk ve gecikmeler gözlemlenmektedir.
+5.3. Sistemin Destekleyebileceği Afetzede Sayısı
+Sonuçlara dayanarak sistemin saniyede yaklaşık 5-6 afetzede destekleyebileceği gözlemlenmiştir. Bu noktada İHA'lar afetzedelere zamanında ulaşabilmekte ve sistem dengeli çalışmaktadır.
+
+5.4. Analiz Sonuçları
+Drone sayısı ve afetzede üretim hızı arasında doğrudan bir ilişki bulunmaktadır. İHA sayısı sabitken, afetzede üretim hızı arttıkça ortalama yardım alma süresi artmaktadır. Sistemin optimal çalışabilmesi için afetzede üretim hızı ile İHA sayısının dengede tutulması gerekmektedir.s
+
+6. Sonuç
+Bu proje, acil durum İHA'larının afetzedelere yardım ulaştırdığı bir simülasyon sunmaktadır. İHA sayısı ve afetzede üretim hızı arasındaki ilişki analiz edilerek sistemin performansı değerlendirilmiştir. Simülasyonun sonuçları, acil durumlarda İHA'ların etkin kullanımının önemini ve doğru planlama ile optimal sonuçlar elde edilebileceğini göstermektedir.
+
