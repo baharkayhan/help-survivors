@@ -11,6 +11,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <pthread.h>
+#include <semaphore.h>
 
 typedef struct node {
     struct node *prev;
@@ -30,6 +32,9 @@ typedef struct list {
     char *startaddress;
     char *endaddress;
     Node *lastprocessed;
+    pthread_mutex_t list_mutex; /*mutex tanımlandı*/
+    sem_t list_sem;             /*semaforlar tanımlandı*/
+
     /*ops on the list*/
     Node *(*add)(struct list *list, void *data);
     int  (*removedata)(struct list *list, void *data);
@@ -51,3 +56,4 @@ void *peek(List *list);
 void destroy(List *list);
 void printlist(List *list, void (*print)(void*));
 void printlistfromtail(List *list, void (*print)(void*));
+void *get_element(List *list, int index);
