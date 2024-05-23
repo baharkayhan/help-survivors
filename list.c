@@ -36,6 +36,10 @@ List *create_list(size_t datasize, int capacity) {
     list->number_of_elements = 0;
     list->capacity = capacity;
 
+    /* Mutex ve Semaforları başlatma */
+    pthread_mutex_init(&list->list_mutex, NULL);
+    sem_init(&list->list_sem, 0, list->capacity);
+    
     /*ops*/
     list->self = list;
     list->add = add;
@@ -90,12 +94,15 @@ static Node *find_memcell_fornode(List *list) {
 Node *add(List *list, void *data) {
     Node *node = NULL;
 
+    pthread_mutex_lock(&list->list_mutex);
+
     /*TODO use semaphores..!*/
     if (list->number_of_elements >= list->capacity) {
         perror("list is full!");
         return NULL;
     }
-
+    sem_wait(&list->list_sem);
+    
     /*first find an unoccupied memcell and insert into it*/
     node = find_memcell_fornode(list);
 
@@ -121,6 +128,8 @@ Node *add(List *list, void *data) {
     } else {
         perror("list is full!");
     }
+    pthread_mutex_unlock(&list->list_mutex);
+    sem_post(&list->list_sem);
 
     return node;
 }
@@ -178,7 +187,8 @@ void *pop(List *list, void *dest) {
  * @return void*: returns the address of head->data
  */
 void *peek(List *list) {
-    if (list->head != NULL) return list->head->data;
+    if (list->head != NULL) 
+        return list->head->data;
 
     return NULL;
 }
@@ -216,6 +226,9 @@ int removenode(List *list, Node *node) {
             list->head = nextnode;
         }
         list->lastprocessed = node;
+        
+        pthread_mutex_unlock(&list->list_mutex);
+        
         return 0;
     }
 
@@ -228,6 +241,7 @@ int removenode(List *list, Node *node) {
  * @param list
  */
 void destroy(List *list) {
+    pthread_mutex_destroy(&list->list_mutex);
     free(list->startaddress);
     memset(list, 0, sizeof(List));
     free(list);
@@ -258,4 +272,10 @@ void printlistfromtail(List *list, void (*print)(void *)) {
         print(temp->data);
         temp = temp->prev;
     }
+}
+void *get_element(List *list, int index){
+    if (index >= 0 && index < list->number_of_elements){
+        return list->elements[index];
+    }
+    return NULL;
 }
