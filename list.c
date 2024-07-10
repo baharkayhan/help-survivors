@@ -1,6 +1,6 @@
 /**
  * @file list.c
- * @author adaskin
+ * @author baharkayhan
  * @brief  a simple doubly linked list stored in an array(contigous memmory).
  * this program is written for educational purposes..
  * TODO: add syncrhonization
