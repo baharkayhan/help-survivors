@@ -1,6 +1,6 @@
 /**
  * @file list.h
- * @author adaskin
+ * @author baharkayhan
  * @brief 
  * @version 0.1
  * @date 2024-04-21
