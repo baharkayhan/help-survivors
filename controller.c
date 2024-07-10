@@ -1,5 +1,7 @@
-
-
+/*
+ * controller.c
+ *      Author: baharkayhan
+ */
 #include "SDL2/SDL.h"
 #include "simulator.h"
 
