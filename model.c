@@ -1,6 +1,6 @@
 /**
  * @file model.c
- * @author your name (you@domain.com)
+ * @author baharkayhan
  * @brief
  * @version 0.1
  * @date 2024-04-21
