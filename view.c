@@ -1,7 +1,7 @@
 /*you can try to print map, or you SDL to show/render map in window.*/
 /**
  * view.c
- *      Author: adaskin
+ *      Author: baharkayhan
  */
 #include "SDL2/SDL.h"
 #include "simulator.h"
