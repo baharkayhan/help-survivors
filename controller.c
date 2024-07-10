@@ -1,7 +1,4 @@
-/*
- * controller.c
- *      Author: adaskin
- */
+
 
 #include "SDL2/SDL.h"
 #include "simulator.h"
